@@ -5,7 +5,7 @@ labels:
 metadata:
   annotations:
     description: An example application to move data from one S3 bucket to another
-    iconClass: icon-php
+    iconClass: icon-shadowman
     tags: aws,s3,centos
   creationTimestamp: null
   name: s3-example
