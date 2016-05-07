@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: s3-example
+metadata:
+  annotations:
+    description: An example application to move data from one S3 bucket to another
+    iconClass: icon-php
+    tags: aws,s3,centos
+  creationTimestamp: null
+  name: s3-example
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Defines how to deploy the application server
+    name: s3-example
+  spec:
+    replicas: 1
+    selector:
+      name: s3-example
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          name: s3-example
+        name: s3-example
+      spec:
+        containers:
+        - env:
+          - name: AWS_ACCESS_KEY_ID
+            value: ${AWS_ACCESS_KEY_ID}
+          - name: AWS_SECRET_ACCESS_KEY
+            value: ${AWS_SECRET_ACCESS_KEY}
+          - name: AWS_DEFAULT_REGION
+            value: ${AWS_DEFAULT_REGION}
+          - name: AWS_ARGS
+            value: ${AWS_ARGS}
+          - name: AWS_S3_ARGS
+            value: ${AWS_S3_ARGS}
+          - name: IN_BUCKET
+            value: ${IN_BUCKET}
+          - name: OUT_BUCKET
+            value: ${OUT_BUCKET}
+          image: docker.io/kevensen/centos-s3-base:latest
+          name: s3-example
+parameters:
+- name: AWS_ACCESS_KEY_ID
+  displayName: AWS Access Key
+  required: true
+- name: AWS_SECRET_ACCESS_KEY
+  displayName: AWS Secret Key
+  required: true
+- name: AWS_DEFAULT_REGION
+  displayName: AWS Region
+  required: true
+  value: us-east-1
+- name: AWS_ARGS
+  displayName: AWS Command Arguments
+  description: aws {AWS_ARGS} s3 cp s3://mybucket/ .
+  value: --no-verify-ssl
+- name: AWS_S3_ARGS
+  displayName: AWS S3 Sub-command Arguments
+  description: aws s3 cp s3://mybucket/ . {AWS_S3_ARGS}
+  value: --recursive
+- name: IN_BUCKET
+  displayName: Input bucket
+  description: The bucket with the input data
+  required: true
+- name: OUT_BUCKET
+  displayName: Output Bucket
+  description: The bucket where to place the output data
+  required: true
+
