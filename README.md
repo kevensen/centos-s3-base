@@ -7,6 +7,6 @@ run -it -e "AWS_ACCESS_KEY_ID=<<access key>>" \
         -e "AWS_DEFAULT_REGION=<<region>>" \
         -e "AWS_ARGS=--no-verify-ssl" \
         -e "AWS_S3_ARGS=--recursive" \
-        -e "IN_BUCKET" \
-        -e "OUT_BUCKET" \
+        -e "IN_BUCKET=<<in bucket name>>" \
+        -e "OUT_BUCKET=<<out bucket name>>" \
         kevensen/centos-s3-base:latest
